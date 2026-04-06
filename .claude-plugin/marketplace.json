@@ -1,0 +1,15 @@
+{
+  "name": "email-manager",
+  "owner": {
+    "name": "EugeneYin",
+    "url": "https://github.com/EugeneYin"
+  },
+  "plugins": [
+    {
+      "name": "email-manager",
+      "source": "./",
+      "description": "Read-only Gmail/Outlook email archival for Claude Code. Categorizes financial, registration, and business-trip emails. Analyzes trip screenshots to auto-download travel attachments.",
+      "version": "1.0.0"
+    }
+  ]
+}
