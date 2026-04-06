@@ -1,0 +1,28 @@
+{
+  "name": "email-manager",
+  "version": "1.0.0",
+  "description": "Read-only email archival and organization for Gmail & Outlook. Categorizes financial, registration, and business-trip emails. Analyzes trip screenshots to auto-download relevant attachments.",
+  "owner": {
+    "name": "email-manager contributors"
+  },
+  "skills": [
+    {
+      "name": "email-manager",
+      "path": "skills/email-manager.md",
+      "description": "Manage and search your Gmail/Outlook archives locally. Use /email-manager to sync, search, list categories, or process a business trip screenshot."
+    }
+  ],
+  "hooks": [
+    {
+      "event": "SessionStart",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "python3 \"$CLAUDE_PLUGIN_DIR/check_setup.py\" 2>/dev/null || true",
+          "async": true,
+          "statusMessage": "Checking email-manager setup..."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Validate plugin manifest
+        run: python - <<'EOF'
+          import json, sys
+          with open(".claude-plugin/manifest.json") as f:
+              m = json.load(f)
+          assert "name" in m, "manifest missing 'name'"
+          assert "skills" in m, "manifest missing 'skills'"
+          assert len(m["skills"]) > 0, "skills array is empty"
+          print(f"Manifest OK: {m['name']} v{m.get('version','?')} ({len(m['skills'])} skill(s))")
+          EOF
+
+      - name: Validate skill file exists
+        run: |
+          for skill in $(python3 -c "
+          import json
+          m = json.load(open('.claude-plugin/manifest.json'))
+          for s in m['skills']: print(s['path'])
+          "); do
+            test -f ".claude-plugin/$skill" && echo "✓ $skill" || (echo "✗ Missing: $skill" && exit 1)
+          done
+
+      - name: Import check (no syntax errors)
+        run: python -c "import email_manager"
+
+      - name: Validate build script
+        run: bash -n build.sh && echo "build.sh syntax OK"

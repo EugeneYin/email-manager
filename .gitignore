@@ -1,0 +1,25 @@
+# Credentials — NEVER commit
+config/accounts.yaml
+*.env
+.env.*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+*.egg
+
+# macOS
+.DS_Store
+
+# Local archive (user data, not source)
+EmailArchive/
+
+# IDE
+.idea/
+.vscode/

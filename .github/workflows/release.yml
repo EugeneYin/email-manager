@@ -1,0 +1,69 @@
+name: Release Plugin
+
+on:
+  push:
+    tags:
+      - "v*"          # Trigger on v1.0.0, v1.2.3, etc.
+
+permissions:
+  contents: write   # needed to create releases and upload assets
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Build zip
+        run: |
+          chmod +x build.sh
+          ./build.sh "${{ steps.version.outputs.VERSION }}"
+
+      - name: Generate release notes
+        id: notes
+        run: |
+          VERSION="${{ steps.version.outputs.VERSION }}"
+          cat <<EOF > release_notes.md
+          ## email-manager v${VERSION}
+
+          Read-only email archival and organization skill for Claude Code.
+
+          ### Installation
+
+          **Option A — install zip directly:**
+          \`\`\`bash
+          unzip email-manager-${VERSION}.zip -d ~/.claude/plugins/email-manager
+          \`\`\`
+
+          **Option B — add to \`~/.claude/settings.json\` via marketplace** (when available):
+          \`\`\`json
+          {
+            "enabledPlugins": {
+              "email-manager@your-marketplace": true
+            }
+          }
+          \`\`\`
+
+          ### First-time setup
+          \`\`\`bash
+          cd ~/.claude/plugins/email-manager
+          pip install -r requirements.txt
+          python run.py setup
+          \`\`\`
+
+          Then use \`/email-manager\` in Claude Code.
+          EOF
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "email-manager v${{ steps.version.outputs.VERSION }}"
+          body_path: release_notes.md
+          files: dist/email-manager-${{ steps.version.outputs.VERSION }}.zip
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-') }}  # v1.0.0-beta → prerelease

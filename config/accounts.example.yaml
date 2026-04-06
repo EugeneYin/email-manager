@@ -1,0 +1,113 @@
+# 邮件账户配置示例，复制为 accounts.yaml 并填写真实信息
+# Gmail 需要开启"两步验证"并生成"应用专用密码"
+# Outlook 同样建议使用应用专用密码
+
+accounts:
+  - name: gmail_personal
+    type: gmail
+    email: your@gmail.com
+    password: "your-app-specific-password"  # Gmail 应用专用密码（16位）
+    imap_host: imap.gmail.com
+    imap_port: 993
+    use_ssl: true
+
+  - name: outlook_work
+    type: outlook
+    email: your@outlook.com
+    password: "your-app-specific-password"
+    imap_host: outlook.office365.com
+    imap_port: 993
+    use_ssl: true
+
+# 本地存储根目录
+storage:
+  base_dir: ~/EmailArchive
+  financial_dir: financial          # 银行/股票/财务
+  registrations_dir: registrations  # 注册类邮件
+  business_trips_dir: business_trips # 出差报销
+
+# 分类关键词配置
+categories:
+  financial:
+    senders:
+      - "@citibank.com"
+      - "@icbc.com.cn"
+      - "@ccb.com"
+      - "@boc.cn"
+      - "@abchina.com"
+      - "@bankofchina.com"
+      - "@cmb.com.cn"
+      - "@cmbchina.com"
+      - "@spdb.com.cn"
+      - "@cib.com.cn"
+      - "@futunn.com"
+      - "@tigersecurities.com"
+      - "@eastmoney.com"
+      - "@xueqiu.com"
+      - "paypal"
+      - "alipay"
+      - "wechatpay"
+    keywords:
+      subject:
+        - "账单"
+        - "对账单"
+        - "交易通知"
+        - "转账"
+        - "还款"
+        - "信用卡"
+        - "理财"
+        - "基金"
+        - "股票"
+        - "证券"
+        - "statement"
+        - "transaction"
+        - "invoice"
+        - "receipt"
+        - "payment"
+        - "billing"
+
+  registrations:
+    keywords:
+      subject:
+        - "验证码"
+        - "激活"
+        - "注册成功"
+        - "欢迎加入"
+        - "confirm your email"
+        - "verify your"
+        - "activate your"
+        - "welcome to"
+        - "successfully registered"
+        - "account created"
+        - "verification code"
+
+  business_trips:
+    keywords:
+      subject:
+        - "行程单"
+        - "电子行程单"
+        - "机票"
+        - "火车票"
+        - "高铁票"
+        - "酒店"
+        - "住宿"
+        - "报销"
+        - "出差"
+        - "差旅"
+        - "itinerary"
+        - "flight confirmation"
+        - "hotel booking"
+        - "train ticket"
+        - "boarding pass"
+        - "reservation"
+      senders:
+        - "@trip.com"
+        - "@ctrip.com"
+        - "@12306.cn"
+        - "@airchina.com"
+        - "@csair.com"
+        - "@ceair.com"
+        - "@shenzhenair.com"
+        - "@bookings.com"
+        - "noreply@expedia"
+        - "noreply@airbnb"
